@@ -1,8 +1,9 @@
 
-package classes;
+package dao;
 
 import aplicações.Conexao_Banco;
-import static classes.Usuario.status;
+import classes.Usuario;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -13,6 +14,7 @@ import javax.swing.JOptionPane;
 public class Conexao_Sistema {
     Connection con = Conexao_Banco.getConnection();
     String q;
+    String status;
     public Usuario Tela_Login(){
         Usuario u = new Usuario();
         while(u.getIdusuario() == 0){

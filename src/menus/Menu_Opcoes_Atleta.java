@@ -2,16 +2,13 @@
 package menus;
 
 import avaliacao.avaliacao_menu;
-import classes.Aula_Diaria;
-import classes.Exercicios_Dia;
 import classes.Usuario;
-import dieta.Dieta;
-import classes.Minhas_Medidas;
+import dao.DaoAtleta;
 import javax.swing.JOptionPane;
 
 
 public class Menu_Opcoes_Atleta extends Menu {   
-	
+	DaoAtleta atleta = new DaoAtleta();
     public void menu(Usuario u){
         while(!sair){
             while(op_menu == null || op_menu.equals("")){
@@ -27,24 +24,20 @@ public class Menu_Opcoes_Atleta extends Menu {
                 
             switch(op){
                 case 1:
-                    Exercicios_Dia ed = new Exercicios_Dia();
-                    ed.exerc_diario_atleta(u);
+                    atleta.exerc_diario_atleta(u);
                     break;
                 case 2:
-                    Dieta dieta = new Dieta();
-                    dieta.Verifica_Dieta_Usuario(u);
+                    atleta.Verifica_Dieta_Usuario(u);
                     break;
                 case 3:
                     avaliacao_menu aval = new avaliacao_menu();
                     aval.menu(u);
                     break;
                 case 4: 
-                    Aula_Diaria ad = new Aula_Diaria();
-                    ad.Aulas_Dia();                    
+                    atleta.Aulas_Dia();                    
                     break;
                 case 5:
-                    Minhas_Medidas mm = new Minhas_Medidas();
-                    mm.Consuta_Medidas(u);
+                    atleta.Consuta_Medidas(u);
                     break;
                 case 6:
                     sair = true;

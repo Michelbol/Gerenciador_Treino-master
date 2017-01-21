@@ -1,8 +1,9 @@
 
 package menus;
 
-import avaliacao.Avaliacoes;
 import classes.Usuario;
+import dao.DaoMedico;
+
 import javax.swing.JOptionPane;
 
 
@@ -17,8 +18,8 @@ public class Menu_Opcoes_Medico extends Menu {
             + "05 - Sair do Sistema\n"));
             switch(op){
                 case 1:
-                    Avaliacoes av = new Avaliacoes();
-                    av.Verifica_Avaliacoes_Medico(u);                    
+                    DaoMedico medico = new DaoMedico();
+                    medico.Verifica_Avaliacoes_Medico(u);                    
                     break;
                 case 2:
                     

@@ -1,19 +1,12 @@
 
 package classes;
 
-import aplicações.Conexao_Banco;
-import java.sql.Connection;
-
 public class Usuario {
-   Connection con = Conexao_Banco.getConnection();
-   String q;
-   static String status="";
    private String login;
    private String senha;
    private int idusuario;
    private int conexao;
    private int permissao;
-   
 //get
     public String getLogin() {
         return login;
@@ -54,5 +47,4 @@ public class Usuario {
     public void setPermissao(int permissao) {
         this.permissao = permissao;
     }
-   
 }
