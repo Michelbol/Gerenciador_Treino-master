@@ -1,11 +1,14 @@
 package dao;
 
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
+
 import javax.swing.JOptionPane;
 import aplicações.Conexao_Banco;
 import avaliacao.avaliacao_menu_horario;
@@ -45,7 +48,7 @@ public class DaoAtleta {
 
     public void Aulas_Dia(){
     	Calendar c = Calendar.getInstance();
-    	Aula_Diaria ad = new Aula_Diaria();
+    	Aula_Diaria ad;
     	ArrayList<Aula_Diaria> Horario_Aulas = new ArrayList<Aula_Diaria>();
         q = "select ad.Aula_Nome, ad.Horario_Aula, s.Dia from aulas_diarias ad " +
             "inner join semana s on ad.idsemana = s.idSemana "+
@@ -54,6 +57,7 @@ public class DaoAtleta {
             Statement st = con.createStatement();
             ResultSet rs = st.executeQuery(q);            
             while(rs.next()){
+            	ad = new Aula_Diaria();
                 ad.setNome_Aula(rs.getString("Aula_Nome"));
                 ad.setHora_Aula(rs.getString("Horario_Aula"));
                 ad.setDia_Aula(rs.getString("Dia"));
@@ -71,7 +75,7 @@ public class DaoAtleta {
     }
 
     public void exerc_diario_atleta(Usuario u){
-    	Exercicios_Dia ed = new Exercicios_Dia();;
+    	Exercicios_Dia ed;
     	ArrayList<Exercicios_Dia> exercicios_dia = new ArrayList<Exercicios_Dia>();
         q = "select s.Dia, e.nome_exercicio as Exercicio, m.Nome_Musculo as Musculo, e.Descricao from exercicios_diarios ed " +
         "inner join usuario u on ed.idUsuario = u.idUsuario " +
@@ -83,6 +87,7 @@ public class DaoAtleta {
             Statement st = con.createStatement();
             ResultSet rs = st.executeQuery(q);            
             while(rs.next()){
+            	ed = new Exercicios_Dia();
                 ed.setDia_Semana(rs.getString("dia"));
                 ed.setNome_Exercicio(rs.getString("Exercicio"));
                 ed.setDescricao(rs.getString("descricao"));
@@ -125,17 +130,18 @@ JOptionPane.showMessageDialog(null, mm.toString());
 }
 
     public void Verifica_Dieta_Usuario (Usuario u){
-    	Dieta d = new Dieta();
-        ArrayList<Dieta> dieta = new ArrayList<Dieta>();
+    	Dieta d;
+        List<Dieta> dieta = new ArrayList<Dieta>();
         q = "select s.Dia as Dia, d.Refeicao, d.Descricao from dieta d " +
             "inner join semana s on s.idSemana = d.idDieta " +
             "inner join usuario u on u.idUsuario = d.idUsuario " +
             "where "+u.getIdusuario()+" = d.idUsuario";
-        System.out.println(q);
         try{ 
+        	
             Statement st = con.createStatement();
             ResultSet rs = st.executeQuery(q);            
             while(rs.next()){
+            	d = new Dieta();
                 d.setDia_Semana(rs.getString("dia"));
                 d.setRefeicao(rs.getString("Refeicao"));
                 d.setDescricao(rs.getString("descricao"));
@@ -145,25 +151,27 @@ JOptionPane.showMessageDialog(null, mm.toString());
             status = e.getMessage();
             System.out.println(status);
         }        
+        System.out.println(dieta);
         JOptionPane.showMessageDialog(null, dieta.toArray());
     }
    
     public void Consulta_Exame(Usuario u){
         ArrayList<Exames> meus_exames = new ArrayList<Exames>();
-        Exames ex = new Exames();
+        Exames ex;
         q = "select av.idAvaliacao as Codigo, av.Dia_avaliacao as Seu_Exame from avaliacao av\n" +
-            "where idusuario ="+ u.getIdusuario() +";";
+            "where idusuario ="+ u.getIdusuario();
         try{
-        Statement st = con.createStatement();
-        ResultSet rs = st.executeQuery(q);           
-        while(rs.next()){ 
-            ex.setIdavaliacao(rs.getInt("Codigo"));
-            ex.setDia_avaliacao(rs.getString("Seu_Exame"));
-            meus_exames.add(ex);
-        }
+        	Statement st = con.createStatement();
+        	ResultSet rs = st.executeQuery(q);           
+        	while(rs.next()){ 
+        		ex = new Exames();
+        		ex.setIdavaliacao(rs.getInt("Codigo"));
+        		ex.setDia_avaliacao(rs.getString("Seu_Exame"));
+        		meus_exames.add(ex);
+        	}
         }catch(SQLException e){
-        status = e.getMessage();
-        System.out.println(status);
+        	status = e.getMessage();
+        	System.out.println(status);
         }
         JOptionPane.showMessageDialog(null, meus_exames.toArray());
     }
@@ -174,7 +182,6 @@ JOptionPane.showMessageDialog(null, mm.toString());
             Statement st = con.createStatement();
             st.executeUpdate(q);
             status = "Alteração realizada com sucesso";
-            System.out.println(status);
         }catch(SQLException e){
             status = "Não foi possivel alterar o registro erro: " +e.getMessage()+" sql executado "+ q;
             System.out.println(status);

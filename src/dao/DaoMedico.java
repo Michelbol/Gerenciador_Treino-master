@@ -23,11 +23,11 @@ public class DaoMedico {
 	//objetos
     ArrayList<Avaliacoes> Avaliacoes_Medico = new ArrayList<Avaliacoes>();  
     
-
     public void Verifica_Avaliacoes_Medico(Usuario u){
         q = "select a.idAvaliacao, u.Login, a.Dia_avaliacao from avaliacao a "
             + "join usuario u on a.idUsuario = u.idUsuario "
             + "where a.idMedico = " + u.getIdusuario() + " and a.Finalizado = 'NAO'";
+        Avaliacoes a;
         try{
         Statement st = con.createStatement();
         ResultSet rs = st.executeQuery(q);
@@ -36,7 +36,7 @@ public class DaoMedico {
                 idavaliacao = rs.getInt("idAvaliacao");
                 data_hora = rs.getString("Dia_avaliacao");
                 nomeusuario = rs.getString("Login");
-                Avaliacoes a = new Avaliacoes(data_hora, nomeusuario, idavaliacao);
+                a = new Avaliacoes(data_hora, nomeusuario, idavaliacao);
                 Avaliacoes_Medico.add(a);                
         }
         }catch (SQLException e){
