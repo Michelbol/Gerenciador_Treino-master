@@ -20,6 +20,7 @@ public class Gerenciamento_Menus{
             case 2:
             	Menu menu_Atleta = new Menu_Opcoes_Atleta();
             	if (u.getIdusuario() != 0 ){
+            		u.VerificaDieta(u);
                 	menu_Atleta.menu(u);
             	}
             	break;

@@ -1,6 +1,6 @@
 
 package avaliacao;
-
+//Classe avaliação é a classe que possui os atributos para as avaliações
 public class Avaliacoes {
 	//Atributos
     private String data_hora;

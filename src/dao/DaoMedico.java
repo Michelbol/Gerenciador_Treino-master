@@ -5,12 +5,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-
 import javax.swing.JOptionPane;
-
 import aplicações.Conexao_Banco;
 import avaliacao.Avaliacoes;
 import classes.Usuario;
+import dieta.Dieta;
 
 public class DaoMedico {
 	Connection con = Conexao_Banco.getConnection();
@@ -20,8 +19,10 @@ public class DaoMedico {
     private int idavaliacao;
     String q;
     String status = "";
+
 	//objetos
-    ArrayList<Avaliacoes> Avaliacoes_Medico = new ArrayList<Avaliacoes>();  
+    ArrayList<Avaliacoes> Avaliacoes_Medico = new ArrayList<Avaliacoes>(); 
+    ArrayList<Dieta> dieta = new ArrayList<Dieta>();
     
     public void Verifica_Avaliacoes_Medico(Usuario u){
         q = "select a.idAvaliacao, u.Login, a.Dia_avaliacao from avaliacao a "
@@ -46,4 +47,23 @@ public class DaoMedico {
     JOptionPane.showMessageDialog(null, Avaliacoes_Medico.toArray());
     }
 	
+    public void criacaoDieta(Usuario u){
+    	Dieta d = new Dieta();
+    	d.setTipoDieta(Integer.parseInt(JOptionPane.showInputDialog(null, "01 - Dieta Maromba ou 02 - "
+    			+ "Dieta Marmotinha?")));
+    	if(d.getTipoDieta() == 1){
+    		d.setCafeDaManha(JOptionPane.showInputDialog(null, "Olá, o que irá comer no café da manhã?"));
+        	d.setColacao(JOptionPane.showInputDialog(null, "E irá comer em sua Colação?"));
+        	d.setAlmoco(JOptionPane.showInputDialog(null, "Almoço?"));
+        	d.setLancheDaTarde(JOptionPane.showInputDialog(null, "Café Da Tarde(Não vale Coxinha"));
+        	d.setJanta(JOptionPane.showInputDialog(null, "Minha janta é meu treino, e a sua?"));
+        	d.setCeia(JOptionPane.showInputDialog(null, "E pra finalizar, qual será sua ceia?"));
+    	}else{
+    		d.setCafeDaManha(JOptionPane.showInputDialog(null, "Olá, o que irá comer no café da manhã?"));
+    		d.setAlmoco(JOptionPane.showInputDialog(null, "Almoço?"));
+    		d.setJanta(JOptionPane.showInputDialog(null, "Minha janta é meu treino, e a sua?"));
+    	}
+    	dieta.add(d);
+    	JOptionPane.showMessageDialog(null, dieta.toArray());
+    }
 }

@@ -5,7 +5,7 @@ import classes.Usuario;
 import menus.Menu;
 import javax.swing.JOptionPane;
 
-public class Dieta_Menu extends Menu {
+public class Dieta_Menu_Medico extends Menu {
     public void menu(Usuario u) {
         while(!sair){
         op = Integer.parseInt(JOptionPane.showInputDialog(""

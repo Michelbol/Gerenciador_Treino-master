@@ -9,7 +9,8 @@ import javax.swing.JOptionPane;
 
 public class avaliacao_menu extends Menu { 
 	DaoAtleta atleta = new DaoAtleta();
-    @Override
+    //Menu das avaliações tem opções de marcar e consultas as avaliações
+	@Override
     public void menu(Usuario u){
         while(!sair){
             while(op_menu == null || op_menu.equals("")){

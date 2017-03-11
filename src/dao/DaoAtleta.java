@@ -2,13 +2,13 @@ package dao;
 
 
 import java.sql.Connection;
+import java.sql.DataTruncation;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-
 import javax.swing.JOptionPane;
 import aplicações.Conexao_Banco;
 import avaliacao.avaliacao_menu_horario;
@@ -26,11 +26,15 @@ public class DaoAtleta {
     private String data_hora;
     String q;
     String status = "";
-    boolean avaliacao;  
+    boolean avaliacao;
+    boolean dieta;
     
     public boolean Marcar_Avalicao(Usuario u){
     	avaliacao_menu_horario hora = new avaliacao_menu_horario();
         data_hora = hora.hora_avaliacao(); 
+        if (data_hora.equals(null)){
+    		return avaliacao = false;
+    	}
          q = "insert into avaliacao(idUsuario, Dia_avaliacao) "
              + "values ("+u.getIdusuario()+", "+"'"+ data_hora +"')";
          try{
@@ -38,10 +42,13 @@ public class DaoAtleta {
              st.executeUpdate(q);
              status = "Registro incluido com sucesso";
              avaliacao = true;
-         }catch(SQLException e){
-             status = "Não foi possivel alterar o registro erro: " +e.getMessage()+" sql executado "+ q;
-             System.out.println(status);
+         }catch(DataTruncation e){
+             JOptionPane.showMessageDialog(null, "Data incorreta, não foi possível gravar sua avaliação");
              avaliacao = false;
+         }catch(SQLException e){
+        	 status = "Não foi possivel alterar o registro erro: " +e.getMessage()+" sql executado "+ q;
+             System.out.println(status);
+             avaliacao = false;        	 
          }
          return avaliacao;
      }
@@ -132,10 +139,11 @@ JOptionPane.showMessageDialog(null, mm.toString());
     public void Verifica_Dieta_Usuario (Usuario u){
     	Dieta d;
         List<Dieta> dieta = new ArrayList<Dieta>();
-        q = "select s.Dia as Dia, d.Refeicao, d.Descricao from dieta d " +
-            "inner join semana s on s.idSemana = d.idDieta " +
-            "inner join usuario u on u.idUsuario = d.idUsuario " +
-            "where "+u.getIdusuario()+" = d.idUsuario";
+        q = "select s.Dia as Dia, r.CafeDaManha, r.Colacao, r.Almoco, r.LancheDaTarde, r.Janta, r.Ceia "
+        		+ "from refeicoes r " 
+        		+ "inner join semana s on s.idSemana = r.idSemana " 
+        		+ "inner join usuario u on u.idUsuario = r.idUsuario " 
+        		+ "where " + u.getIdusuario() + " = r.idUsuario";
         try{ 
         	
             Statement st = con.createStatement();
@@ -143,15 +151,18 @@ JOptionPane.showMessageDialog(null, mm.toString());
             while(rs.next()){
             	d = new Dieta();
                 d.setDia_Semana(rs.getString("dia"));
-                d.setRefeicao(rs.getString("Refeicao"));
-                d.setDescricao(rs.getString("descricao"));
+                d.setCafeDaManha(rs.getString("CafeDaManha"));
+                d.setColacao(rs.getString("Colacao"));
+                d.setAlmoco(rs.getString("Almoco"));
+                d.setLancheDaTarde(rs.getString("LancheDaTarde"));
+                d.setJanta(rs.getString("Janta"));
+                d.setCeia("Ceia");
                 dieta.add(d);
             }
         }catch(SQLException e){
             status = e.getMessage();
             System.out.println(status);
-        }        
-        System.out.println(dieta);
+        }
         JOptionPane.showMessageDialog(null, dieta.toArray());
     }
    
@@ -188,4 +199,51 @@ JOptionPane.showMessageDialog(null, mm.toString());
         }
     	
     }
+
+	public boolean CadastraDietaMaromba(Usuario u){
+		Dieta d = new Dieta();
+         q = "insert into refeicoes(idDieta, CafeDaManha, Colacao, Almoco, LancheDaTarde, Janta, Ceia"
+         		+ ", idUsuario, idSemana)"
+         		+ "values (3," + d.getCafeDaManha() + "," + d.getColacao() + "," + d.getAlmoco() + "," 
+         		+ d.getLancheDaTarde() + "," + d.getJanta() + "," + d.getCeia() + "," + u.getIdusuario() + ","
+         		+ d.getDia_Semana() + " )";
+         try{
+             Statement st = con.createStatement();
+             st.executeUpdate(q);
+             status = "Registro incluido com sucesso";
+             dieta = true;
+         }catch(SQLException e){
+        	 status = "Não foi possivel alterar o registro erro: " +e.getMessage()+" sql executado "+ q;
+             System.out.println(status);
+             dieta = false;        	 
+         }
+         return dieta;
+		
+		
+	}
+
+	public void CadastraDietaMarmota(Usuario u){
+		
+		/*avaliacao_menu_horario hora = new avaliacao_menu_horario();
+        data_hora = hora.hora_avaliacao(); 
+         q = "insert into refeicoes(idUsuario, Dia_avaliacao) "
+             + "values ("+u.getIdusuario()+", "+"'"+ data_hora +"')";
+         try{
+             Statement st = con.createStatement();
+             st.executeUpdate(q);
+             status = "Registro incluido com sucesso";
+             avaliacao = true;
+         }catch(DataTruncation e){
+             JOptionPane.showMessageDialog(null, "Data incorreta, não foi possível gravar sua avaliação");
+             avaliacao = false;
+         }catch(SQLException e){
+        	 status = "Não foi possivel alterar o registro erro: " +e.getMessage()+" sql executado "+ q;
+             System.out.println(status);
+             avaliacao = false;        	 
+         }
+         return avaliacao;
+		
+		*/
+	}
+
 }

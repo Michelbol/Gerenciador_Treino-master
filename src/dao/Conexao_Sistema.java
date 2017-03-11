@@ -40,6 +40,7 @@ public class Conexao_Sistema {
                 u.setLogin(rs.getString("Login"));
                 u.setSenha(rs.getString("Senha"));
                 u.setPermissao(rs.getInt("idPermissoes"));
+                u.setDieta(rs.getInt("idDieta"));
             }else{
                 u.setIdusuario(0);
                 u.setLogin("");
